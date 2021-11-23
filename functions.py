@@ -45,6 +45,18 @@ def cleaning(data_file):
     return df
 
 
+def normalizing(data_file):
+    """
+    :author: Victor Bercy
+    :param data_file:
+    :return:
+    """
+    df = pd.read_csv(data_file)
+    means = df_mean(df)
+    colnames = df.columns
+
+
+
 df = cleaning('kidney_disease.csv')
 print(df)
 
