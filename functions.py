@@ -3,7 +3,6 @@ import numpy as np
 from statistics import mode
 
 
-
 def df_mean(df):
     """
     :author: Nicolas Gouraud
@@ -16,11 +15,12 @@ def df_mean(df):
         means.append(mode(df[column]))
     return means
 
+
 def cleaning(data_file):
     """
-    :author: Nicolas Gouraud
+    :author: Nicolas Gouraud, Quentin Ribaud
     :param data_file: path to data to clean
-    :return: a cleaned dataframe, with NaN values replaced by average correponding column value
+    :return: a cleaned dataframe, with NaN values replaced by average correponding column value, with outlier values removed
     """
     df = pd.read_csv(data_file)
     means = df_mean(df)
@@ -32,7 +32,19 @@ def cleaning(data_file):
             print(df.at[i, colnames[j]])
             if pd.isnull(df.at[i, colnames[j]]):
                 df.at[i, colnames[j]] = means[j]
+
+    # Now, we want te replace the outlier values of the dataframe by more convenient values, it can happen if there are miss inputs in the DF
+
+    df.describe()
+    df.plot(kind='box', figsize=(12, 8))
+    plt.show()
+    # removing the outlier value in life_sq column
+    # out_value = outlier_value_seen_with_plt.show()
+    df = df.loc[df < out_value]
+
     return df
+
 
 df = cleaning('kidney_disease.csv')
 print(df)
+
