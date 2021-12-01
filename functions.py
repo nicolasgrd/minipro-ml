@@ -31,6 +31,24 @@ def df_std(df):
             var.append(None)
     return var
 
+def binarization(df):
+    """
+    author : Nicolas Gouraud
+    :param df: dataframe to binarize
+    :return: a binarized df, based on the user inputs
+    """
+    colnames = df.columns
+    for j in range(len(colnames)):
+        if type(df.at[0, colnames[j]]) is str:
+
+            print("press y if you want ", df.at[0, colnames[j]], " to be associated to 1, n for 0")
+            v = input()
+            if v == "y":
+                df[colnames[j]] = np.where(df[colnames[j]] == df.at[0, colnames[j]], 1, 0)
+            else:
+                df[colnames[j]] = np.where(df[colnames[j]] == df.at[0, colnames[j]], 0, 1)
+    return df
+
 
 def cleaning(data_file):
     """
@@ -38,25 +56,27 @@ def cleaning(data_file):
     :param data_file: path to data to clean
     :return: a cleaned dataframe, with NaN values replaced by average correponding column value, with outlier values removed
     """
+
     df = pd.read_csv(data_file)
     means = df_mean(df)
     colnames = df.columns
 
+    # if we find NaN values in means, the corresponding columns needs to be dropped
+    col_todrop = []
+
+    for i in range(len(means)):
+        if pd.isnull(means[i]):
+            col_todrop.append(colnames[i])
+
+    df = df.drop(col_todrop, axis=1)
+    colnames = df.columns
+    means = df_mean(df)
+
     # We replace missing values by an average value
     for j in range(len(colnames)):
         for i in range(len(df[colnames[j]])):
-            #print(df.at[i, colnames[j]])
             if pd.isnull(df.at[i, colnames[j]]):
                 df.at[i, colnames[j]] = means[j]
-
-    # Now, we want te replace the outlier values of the dataframe by more convenient values, it can happen if there are miss inputs in the DF
-
-    #df.describe()
-    #df.plot(kind='box', figsize=(12, 8))
-    #plt.show()
-    # removing the outlier value in life_sq column
-    # out_value = outlier_value_seen_with_plt.show()
-    #df = df.loc[df < out_value]
 
     return df
 
@@ -71,7 +91,7 @@ def normalizing(df, excluded_columns):
     means = df_mean(df)
     colnames = df.columns
     std = df_std(df)
-    # We replace missing values by an average value
+    # we exclude str data from normalization
     for j in range(len(colnames)):
         if (type(df.at[0, colnames[j]]) is not str) and (colnames[j] not in excluded_columns):
             for i in range(len(df[colnames[j]])):
