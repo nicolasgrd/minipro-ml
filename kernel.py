@@ -1,5 +1,6 @@
 from functions import *
 from sklearn.svm import SVC
+from sklearn.decomposition import PCA
 
 
 df_kidney = cleaning('kidney_disease.csv')
@@ -15,6 +16,8 @@ Yk = df_kidney["classification"].to_numpy()
 
 Xb = df_banknote.drop("classification", axis=1).to_numpy()
 Yb = df_banknote["classification"].to_numpy()
+
+Xk_PCA = do_PCA(4, Xk)
 
 
 def compute_mean_scores_kcross_kernel(n_splits, X, Y, kernels=None):
@@ -45,4 +48,8 @@ compute_mean_scores_kcross_kernel(6, Xb, Yb)
 
 print("\n")
 print("Kidney")
+compute_mean_scores_kcross_kernel(6, Xk, Yk)
+
+print("\n")
+print("Kidney with PCA")
 compute_mean_scores_kcross_kernel(6, Xk, Yk)

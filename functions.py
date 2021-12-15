@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from statistics import mode
 from sklearn.model_selection import KFold
+from sklearn.decomposition import PCA
+
 
 def df_mean(df):
     """
@@ -121,3 +123,13 @@ def cross_validation_split(X, Y, n_sp):
     return X_test, Y_test, X_train, Y_train
 
 
+def do_PCA(n_comp, X):
+    """
+    :author: Nicolas Gouraud
+    :param n_comp: number of component you wish to keep
+    :param X: data
+    :return: reduced data
+    """
+    pca = PCA(n_components=4)
+    pca.fit(X)
+    return pca.transform(X)
