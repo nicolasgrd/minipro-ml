@@ -16,11 +16,13 @@ df_banknote = normalizing(cleaning('data_banknote_authentication.txt'), ["classi
 Xk = df_kidney.drop(["classification"], axis=1).to_numpy()
 Yk = df_kidney["classification"].to_numpy()
 
+Xk_PCA = do_PCA(4, Xk)
 
 Xb = df_banknote.drop("classification", axis=1).to_numpy()
 Yb = df_banknote["classification"].to_numpy()
 
 def neural_network(X,Y,data_type,n):
+    'author : Quentin RIBAUD'
 
     #if data_type =='kidney':
      #   label=LabelEncoder()
@@ -45,3 +47,6 @@ print("\n")
 print("Banknote accuracy for Neural Network modelling is : ")
 print(neural_network(Xb, Yb,'Bank', 6))
 
+print("Kidney accuracy for Neural Network modelling with PCA is : ")
+
+print(neural_network(Xk_PCA, Yk,'Kidney', 6))

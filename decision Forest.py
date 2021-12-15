@@ -21,7 +21,7 @@ Yb = df_banknote["classification"].to_numpy()
 
 
 def random_forest(X,Y,n):
-
+    'author : Quentin RIBAUD'
     X_test, y_test, X_train, y_train = cross_validation_split(X, Y, n)
 
     op_max_depth = 14
@@ -42,3 +42,9 @@ print("\n")
 
 print("Kidney accuracy for Decision Forest modelling is : ")
 print(random_forest(Xk,Yk,6))
+
+
+
+#print("\n")
+#print("Kidney accuracy for Decision Forest modelling  with PCA")
+#print(random_forest(6, Xk_PCA, Yk))
