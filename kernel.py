@@ -1,7 +1,9 @@
 from functions import *
 from sklearn.svm import SVC
-from sklearn.decomposition import PCA
 
+"""
+Kernels method made by Nicolas Gouraud
+"""
 
 df_kidney = cleaning('kidney_disease.csv')
 df_kidney = df_kidney.drop('id', axis=1)
@@ -42,14 +44,17 @@ def compute_mean_scores_kcross_kernel(n_splits, X, Y, kernels=None):
     for i in range(len(kernels)):
         print("kernel", kernels[i], "mean cross val accuracy is ", scores_kernels[i])
 
+    return scores_kernels
+
+
 
 print("Banknote")
-compute_mean_scores_kcross_kernel(6, Xb, Yb)
+Bk_scores = compute_mean_scores_kcross_kernel(6, Xb, Yb)
 
 print("\n")
 print("Kidney")
-compute_mean_scores_kcross_kernel(6, Xk, Yk)
+Kid_scores = compute_mean_scores_kcross_kernel(6, Xk, Yk)
 
 print("\n")
 print("Kidney with PCA")
-compute_mean_scores_kcross_kernel(6, Xk, Yk)
+Kid_PCA_scores = compute_mean_scores_kcross_kernel(6, Xk_PCA, Yk)
